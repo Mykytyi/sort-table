@@ -9,20 +9,29 @@ for(let i = 0; i < tRows.length; i++) {
 }
 
 
-grid.onclick = function(event) {
+grid.addEventListener('click', function(event) {
   let aim = event.target;
-  if (aim.dataset.type === 'string') {
-  } else if (aim.dataset.type === 'number') {
-      rowsArray.sort(function (num1, num2) {
-        return num1.firstElementChild.innerHTML - num2.firstElementChild.innerHTML;
-      });
-  }
 
-  grid.removeChild(tBody);
+  switch (aim.dataset.type) {
+    case 'string': rowsArray.sort(function (name1, name2) {
+        let firstN = name1.children[1].innerHTML.toLowerCase();
+        let secondN = name2.children[1].innerHTML.toLowerCase();
+        if(firstN > secondN) {
+          return 1;
+        }
+        if(firstN < secondN) {
+          return -1;
+        }
+      });
+      break;
+    case 'number':
+      rowsArray.sort(function (num1, num2) {
+         return num1.children[0].innerHTML - num2.children[0].innerHTML;
+      });
+      break;
+  };
 
   for (let i = 0; i < rowsArray.length; i++) {
     tBody.appendChild(rowsArray[i]);
   }
-
-  grid.appendChild(tBody);
-};
+});
